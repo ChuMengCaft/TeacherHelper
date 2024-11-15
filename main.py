@@ -186,7 +186,7 @@ class App:
     def about_ui(self):
         self.clear_widgets()
 
-        self.display_area.config(text="TeacherHelper\n\nDev:洪习文\n\n")
+        self.display_area.config(text="TeacherHelper\n\nDev:洪习文\n\n软件已基于Apache-2.0协议开源\nhttps://github.com/ChuMengCaft/TeacherHelper")
         self.display_area.pack(pady=20)
         self.current_widgets.append(self.display_area)
 
