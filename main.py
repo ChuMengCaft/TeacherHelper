@@ -24,7 +24,6 @@ class App:
         self.menu_bar.add_command(label="作业检查", command=self.homework_check_ui)
         self.menu_bar.add_command(label="设置", command=self.settings_ui)
         self.menu_bar.add_command(label="关于", command=self.about_ui)
-        self.menu_bar.add_command(label="MySQL",command=self.mysql_ui)
 
         self.display_area = tk.Label(root, text="Welcome to use\n请在菜单栏选择需要的功能",
                                      font=("Arial", self.font_size.get()))
@@ -55,8 +54,9 @@ class App:
         self.current_widgets.append(self.random_name_button)
 
     def start_random_name(self):
+        self.clear_widgets()
         with open(self.names_file_path, 'r', encoding='utf-8') as f:
-            names = [line.strip() for line in f.readlines()]
+            names = [line.strips() for line in f.readlines()]
 
         if self.skip_animation.get():
             chosen_name = random.choice(names)
@@ -64,6 +64,10 @@ class App:
         else:
             self.display_area.config(text="正在点名...")
             self.animate_random_name(names)
+        self.random_name_button = tk.Button(self.root, text="开始点名", font=("Arial", self.font_size.get()),
+                                        command=self.start_random_name)
+        self.random_name_button.pack(pady=10)
+        self.current_widgets.append(self.random_name_button)
 
     def animate_random_name(self, names):
         for _ in range(50):
@@ -126,7 +130,6 @@ class App:
                 for name in names:
                     if name in file_path:
                         self.pending_students.discard(name)
-                        break
 
         self.auto_check_rounds()
 
@@ -136,7 +139,7 @@ class App:
             self.root.after(1000, self.auto_check_rounds)
         elif self.check_round == 3:
             if self.pending_students:
-                self.display_area.config(text="未交作业的学生：\n" + "\n".join(self.pending_students))
+                self.display_area.config(text="如存在一个文件夹多个名字，可能会存在与下列列表中\n未交作业的学生：\n" + "\n".join(self.pending_students))
             else:
                 self.display_area.config(text="所有学生的作业都已经提交。\n")
 
@@ -149,7 +152,7 @@ class App:
         self.names_file_input = tk.Entry(self.root, font=("Arial", self.font_size.get()), width=40)
         self.names_file_input.pack(pady=10)
         if self.names_file_path:
-            self.names_file_input.insert(0, self.names_file_path)
+            self.nam上es_file_input.insert(0, self.names_file_path)
         self.current_widgets.append(self.names_file_input)
 
         self.set_names_file_button = tk.Button(self.root, text="指定names.txt路径",
@@ -183,20 +186,9 @@ class App:
     def about_ui(self):
         self.clear_widgets()
 
-        self.display_area.config(text="TeacherHelper\n\nDev:ChuMengCaft\n\nPython比C语言简单多了！！！！！！")
+        self.display_area.config(text="TeacherHelper\n\nDev:洪习文\n\n")
         self.display_area.pack(pady=20)
         self.current_widgets.append(self.display_area)
-
-    def mysql_ui(self):
-        self.clear_widgets()
-
-        self.display_area.config(text="MySQL(开发中)\nIP:\nPort:\nAccount:\nPassword:\n")
-        self.display_area.pack(pady=20)
-        self.current_widgets.append((self.display_area))
-        self.mysql_submit = tk.Button(self.root,text="尝试连接",command="#")
-        self.mysql_submit.pack(pady=10)
-        self.mysql_submit.append(self.mysql_submit)
-
 
 if __name__ == "__main__":
     root = tk.Tk()
